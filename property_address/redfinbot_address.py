@@ -1,6 +1,7 @@
 import time
 import pandas as pd
 import datetime
+import random
 from funtions_bot import initChromeDriver
 from funtions_bot import extract_info_properties_url
 from funtions_bot import get_df
@@ -8,8 +9,6 @@ from funtions_bot import exec_cyberghost
 from funtions_bot import search
 from funtions_bot import move_to_element
 from funtions_bot import get_response
-from funtions_bot import exec_cyberghost
-from funtions_bot import exec_cyberghost
 
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -55,12 +54,17 @@ def main():
         # Wait for initialize, in seconds
         
         cmd = 'sudo cyberghostvpn --traffic --country-code codecountry --connect'
-        country = 'AR' #Argentina
-        country2 = 'CL' #Chile
-        country3 = 'CO' #Colombia
+        d = {1:'MX', #Mexico
+            2: 'US', #USA
+            3: 'ES', #España
+            4: 'AR', #Argentina
+            5: 'CN' #China
+        }
+
         attemps = 0
         list_scrape = df
         while(attemps < 3 and list_scrape.shape[0] > 0):
+            c = d[random.randint(1,5)]
             debug2 = pd.DataFrame(columns=[
                 'building_parcel_number',
                 'date_create_source',
@@ -113,7 +117,7 @@ def main():
 
                     if time_init_cyb == 0:
                         time_init_cyb = datetime.datetime.now()
-                        exec_cyberghost(cmd,country2)
+                        exec_cyberghost(cmd,c)
                         print('Time_init cyberghost',time_init_cyb,'Time_end cyberghost',time_end_cyb)
 
                     

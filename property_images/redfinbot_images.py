@@ -4,6 +4,7 @@ import datetime
 import os
 import shutil
 import boto3
+import random
 from funtions_bot import initChromeDriver
 from funtions_bot import extract_images
 from funtions_bot import get_df
@@ -32,14 +33,18 @@ if __name__ == '__main__':
     print('START REDFIN BOT IMAGES')
     folder = str(time.strftime("%Y-%m-%d-%H:%M"))
     cmd = 'sudo cyberghostvpn --traffic --country-code codecountry --connect'
-    country = 'AR' #Argentina
-    country2 = 'CL' #Chile
-    country3 = 'CO' #Colombia
+    d = {1:'MX', #Mexico
+        2: 'US', #USA
+        3: 'ES', #España
+        4: 'AR', #Argentina
+        5: 'CN' #China
+    }
     attemps = 0
     list_scrape = df
     try:
         s3 = boto3.client('s3')
         while(attemps < 3 and list_scrape.shape[0] > 0):
+            c = d[random.randint(1,5)]
             debug1 = pd.DataFrame(columns=[
                 "index",
                 "TIME_DOWNLOAD_IN_SECONDS",
@@ -63,7 +68,7 @@ if __name__ == '__main__':
                     #if indx == 2: break
                     if time_init_cyb == 0:
                         time_init_cyb = datetime.datetime.now()
-                        exec_cyberghost(cmd,country2)
+                        exec_cyberghost(cmd,c)
                         print('Time_init cyberghost',time_init_cyb,'Time_end cyberghost',time_end_cyb)
 
                     time_init = datetime.datetime.now()
