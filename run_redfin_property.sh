@@ -9,6 +9,10 @@ source /home/kukun-v/Escritorio/Redfin_property/redfin/bin/activate #COLOCAR RUT
 #source /home/kukuno1/Desktop/Redfin_CSV/redfin/bin/activate
 #source /home/anthony/kukun/bin/activate
 ######################ENTER FILTERS REDFIN########################
+dayinit=$(date +%A)
+horainit=$(date +%H)
+mininit=$(date +%M)
+nohup echo $"Day Init $dayinit a las $horainit:$mininit" > timeinit_redfinpro.txt
 
 ###########################VALIDATE INSERT REDFIN##############################
 while :
@@ -278,3 +282,7 @@ if [ "$validateinsert" = 'y' ]; then
 	cd ..
 fi
 #################################################################################################################
+dayinit=$(date +%A)
+horainit=$(date +%H)
+mininit=$(date +%M)
+nohup echo $"Day Init $dayinit a las $horainit:$mininit" > timeEnd_redfinpro.txt

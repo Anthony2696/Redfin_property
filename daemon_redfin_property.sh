@@ -9,7 +9,10 @@ cd /home/kukun-v/Escritorio/Redfin_property/run_daemon
 source /home/kukun-v/Escritorio/Redfin_property/redfin/bin/activate #COLOCAR RUTA ESPECIFICA DONDE SE ENCUENTRE EL PROYECTO
 #source /home/kukuno1/Desktop/Redfin_CSV/redfin/bin/activate
 #source /home/anthony/kukun/bin/activate
-######################ENTER FILTERS REDFIN########################
+dayinit=$(date +%A)
+horainit=$(date +%H)
+mininit=$(date +%M)
+nohup echo $"Day Init $dayinit a las $horainit:$mininit" > timeinit_redfinpro.txt
 
 ###########################VALIDATE INSERT REDFIN##############################
 #$1 -> primer parametro 
@@ -259,3 +262,7 @@ if [ "$validateinsert" = 'y' ]; then
 	cd ..
 fi
 #################################################################################################################
+dayinit=$(date +%A)
+horainit=$(date +%H)
+mininit=$(date +%M)
+nohup echo $"Day Init $dayinit a las $horainit:$mininit" > timeEnd_redfinpro.txt
