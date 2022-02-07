@@ -1,0 +1,171 @@
+README
+
+SPANISH
+
+REQUISITOS PREVIOS:
+
+1. TENER CYBERGHOSTVPN
+2. CREAR ENTORNO VIRTUAL E INSTALAR EL requirements.txt
+3. MODIFICAR LAS RUTAS EN "daemon_redfin_property.sh", "run_redfin_property.sh"
+4. EN CASO DE CAMBIAR LA EJECUCION DE LA INSERCION DEBE MODIFICAR LAS RUTAS EN "prepare_input.sh", "clean.py", 
+"./insert_redfin_property/exe.sh", "run_redfin_property.sh".
+
+** METODO DE EJECUCION **
+
+	1. EJECUTAR EL PROYECTO:
+	
+		a. Usando "run_redfin_property.sh"
+
+			$ ./run_redfin_property.sh
+			
+			NOTA: EL EJECUTABLE PEDIRA LAS ENTRADAS NECESARIAS PARA EL AUTOMATIZADO, EN CASO DE EQUIVOCARSE
+			EL EJECUTABLE VOLVERA A PEDIR TODAS LAS ENTRADAS. LOS DATOS DESCARGADOS QUEDARAN EN LA MAQUINA DONDE
+			SE EJECUTE EL AUTOMATIZADO Y LAS SALIDAS DE LA INSERCION QUEDARAN EN EL SERVIDOR REMOTO QUE TENGA 
+			CONFIGURADO EL PROYECTO.
+
+		B. USANDO "daemon_redfin_property.sh"
+			
+			$ ./daemon_redfin_property.sh $1 $2
+			
+			$1: Validar si las ejecuciones se quieren insertar/actualizar a la base de datos OriginalData, Colocar Y/y para
+			    insertar/actualizar en la base de datos, colocar N/n para no hacerlo.
+
+			$2: Funcionalidad para la extraccion de informacion, colocar 1 si desea ejecutar la extraccion mediante consultas directas por URL, colocar 2 si desea ejecutar la extraccion mediante colsultas por direccion.
+
+			Nota: Este ejecutable se hizo con el fin de ejecutarlo con ayuda del demonio de cron (linux), esto con 
+			la finalidad de poder darle una frecuencia a la ejecucion, es decir, que se ejecute en un periodo de tiempo.debe
+            ademas saber configurar el demonio cron (Ver Demonio_Cron
+			mas abajo). Tener en cuenta que el metodo de extraccion numero 2 es mas lento que el metodo 1. Ejemplo de ejecucion.
+			
+			$ ./daemon_redfin_property.sh y 1 
+
+** SIGNIFICADO DE LOS ARCHIVOS GENERADOS DURANTE EL PROCESO: **
+	1. results_redfin_property: Es el archivo guia fusionado de todo el conjunto de archivos generados por el proceso de extraccion de informacion. Este se encuentra en la carpeta merge del proyecto.
+	2. results_properties: Es la data final de informacion de propiedades, que se logro obtener en todo el proceso de extraccion.
+	3. results_redfin_propertyImages: Es el archivo guia fusionado de todo el conjunto de archivos generados por el proceso de extraccion de imagenes. Este se encuentra en la carpeta merge del proyecto.
+    4. results_images: Es el archivo que tiene todas las imagenes extraidas y subidas a el aws, en este archivo se encuentra el path, name y original_id y servira para insertarlo en la base de datos OriginalData.
+	5. df_report: Son los archivos con la funcion de visualizar los reportes de MySQL durante el proceso de insertar en la base de datos. Este se encuentra en el servidor remoto que tenga configurado el proyecto, en su carpeta especifica generada.
+	6. output_part: Son los archivos con la funcion de visualizar las propiedades que se actualizaron en la base de datos. Este se 	encuentra en el servidor remoto que tenga configurado el proyecto, en su carpeta especifica generada.
+    7. output_part_images: Son los archivos con la funcion de visualizar las imagenes de propiedades que se insertaron/actualizaron en la base de datos. Este se encuentra en el servidor remoto que tenga configurado el proyecto, en su carpeta especifica generada.
+
+** Demonio_Cron **
+	Agregar tareas a crontab
+
+	Ejecutamos la edición del crontab con "$ crontab -e", en algunas distros (como ubuntu) nos da la opcion de elegir el editor de 		textos que deseemos, los demás nos quedamos con vi/vim. El archivo crontab lucirá algo asi.
+
+	# m h dom mon dow user command
+	donde:
+
+	m: corresponde al minuto en que se va a ejecutar el script, el valor va de 0 a 59
+	h: la hora exacta, se maneja el formato de 24 horas, los valores van de 0 a 23, siendo 0 las 12:00 de la medianoche.
+	dom: hace referencia al día del mes, por ejemplo se puede especificar 15 si se quiere ejecutar cada dia 15
+	dow: significa el día de la semana, puede ser numérico (0 a 7, donde 0 y 7 son domingo) o las 3 primeras letras del día en inglés: 		     mon, tue, wed, thu, fri, sat, sun.
+	user: define el usuario que va a ejecutar el comando, puede ser root, u otro usuario diferente siempre y cuando tenga permisos de 		      ejecución del script.
+	command: refiere al comando o a la ruta absoluta del script a ejecutar, ejemplo: /home/usuario/scripts/actualizar.sh, si acaso llama 		         a un script este debe ser ejecutable. EJEMPLOS:
+
+			15 10 * * * usuario /home/usuario/scripts/actualizar.sh
+			
+		Ejecutará el script actualizar.sh a las 10:15 a.m. todos los días.
+		
+			15 22 * * * usuario /home/usuario/scripts/actualizar.sh
+		
+		Ejecutará el script actualizar.sh a las 10:15 p.m. todos los días
+
+			30 7 20 11 * /home/usuario/scripts/actualizar.sh
+		
+		El día 20 de noviembre a las 7:30 el usuario con que se abre este cron correra el script.
+
+MUY IMPORTANTE:
+
+	1. LA MAQUINA DONDE SE EJECUTE EL AUTOMATIZADO DEBE TENER INSTALADO CYBERGHOSTVPN, YA QUE EL BOT UTILIZA EL COMANDO PARA VARIAR LA 		IP.
+	2. NO PUEDEN CAMBIAR LA IP USANDO CYBERGHOSTVPN , YA SEA MANUALMENTE U EN OTROS PROCESOS QUE SE ESTEN EJECUTANDO EN LA MISMA MAQUINA 		DEL AUTOMATIZADO, YA QUE EL AUTOMATIZADO ESTABLECE CONEXION ATRAVES DE UN TUNNEL SSH A LOS SERVIDORES REMOTOS PARA EJECUTAR LA 		INSERCION,CAMBIAR LA IP EN ESE MOMENTO DETENDRIA LA CONEXION ENTRE LA MAQUINA Y EL SERVIDOR REMOTO Y POR ENDE DETENDRIA LA INSERCION.
+
+** CONFIGURACIONES **
+
+	SERVIDOR REMOTO: 13.57.62.82
+	RUTA EN EL SERVIDOR:  /home/ubuntu/Redfin/Redfin_property/insert_redfin_property/ 
+
+ENGLISH
+
+PREVIOUS REQUIREMENTS:
+
+    1. Have CyberghostVPN.
+    2. Create virtual environment and install the requirements.txt
+    3. Modify the routes in "daemon_redfin_property.sh", "Run_REDFIN_PROPERTY.SH"
+    4. In case of changing the execution of the insert, you must modify the routes in "prepare_input.sh", "Clean.py",
+    "./insert_redfin_property/exe.sh", "Run_REDFIN_PROPERTY.SH".
+
+** EXECUTION METHOD **
+
+    1. Execute the project:
+
+        A. Using "Run_REDFIN_PROPERTY.SH"
+
+            $ ./run_redfin_property.sh.
+
+            Note: The executable will ask the necessary entries for the automated, if they are wrong
+            The executable will go back to order all the tickets. The downloaded data will be on the machine where
+            The automated and the insert outputs are run on the remote server that has
+            Configured the project.
+
+        B. Using "daemon_redfin_property.sh"
+
+            $ ./daemon_redfin_property.sh $1 $2
+
+            $1: Validate if the executions want to insert / upgrade to the original database, place Y/y for
+            Insert / update in the database, place N/n not to do so.
+
+            $ 2: Functionality for information extraction, PRESS 1 If you want to run the extraction by direct queries by URL, PRESS 2 if you want to execute the extraction by colSults by address.
+
+                Note: This executable was done in order to execute it with the help of the demon of Cron (Linux), this with
+                The purpose of being able to give it a frequency to the execution, that is, to be executed in a period of time. also know how to configure the cron demon (see demon_cron below). Keep in mind that 
+                the extraction method number 2 is slower than the method 1. Example of execution.
+
+                    $ ./daemon_redfin_property.sh y 1
+
+** Meaning of files generated during the process: **
+
+    1. results_redfin_property: It is the Fixed Guide file of the entire set of files generated by the Information Extraction Process. This is located in the Merge folder of the project.
+    2. Results_Properties: It is the final data of property information, which can be achieved throughout the extraction process.
+    3. results_redfin_propertyimages: is the file merged guide of the entire set of files generated by the image extraction process. This is located in the Merge folder of the project.
+    4. results_images: It is the file that has all the images extracted and uploaded to the AWS, in this file is the Path, Name and Original_ID and serve to insert it into the original database.
+    5. DF_Report: They are the files with the function of visualizing MySQL reports during the insert process in the database. This is on the remote server that has the project configured, in its specific folder generated.
+    6. OUTPUT_PART: These are the files with the function of visualizing the properties that were updated in the database. This is on the remote server that has the project configured, in its specific folder generated.
+    7. OUTPUT_PART_IMAGES: They are the files with the function of visualizing the images of properties that were inserted / updated in the database. This is on the remote server that has the project configured, in its specific folder generated.
+
+** Demon_Cron **
+    Add Tasks to Crontab
+
+    We executed the edition of the crontab with "$ Crontab -E", in some distros (as Ubuntu) gives us the option to choose the text editor we wish, the others we stay with VI / VIM. The crontab file will look something like that.
+
+    # m H Dom Mon Dow User Command
+    where:
+
+    M: corresponds to the minute in which the script is going to be executed, the value goes from 0 to 59
+    H: The exact time, the 24-hour format is handled, the values ​​range from 0 to 23, being 0 12:00 on midnight.
+    DOM: Reference is referenced to the day of the month, for example you can specify 15 if you want to execute every day 15
+    Dow: It means the day of the week, it can be numeric (0 to 7, where 0 and 7 are Sunday) or the first 3 letters of the day in English: Mon, Tue, Wed, Thu, Fri, Sat, Sun.
+    User: Defines the user who will run the command, it can be root, or other different user as long as it has script execution permissions.
+    Command: Refers to the command or to the absolute route of the script to be executed, Example: /home/usuario/Scripts/Actualize.sh, if you call a script this should be executable. Examples:
+
+        15 10 * * * User /home/usuario/Scripts/Actualization.sh
+
+    Execute the Update.sh script at 10:15 A.m. every day.
+
+        15 22 * ​​* * User / HOME/USEUARIO/SCRIPTS/UCTUALIZE.SH
+
+    Execute the Update.sh script at 10:15 p.m. every day
+
+        30 7 20 11 * /home/usuario/Scripts/Actualization.sh
+
+    On November 20 at 7:30 the user with which this cron is opened, the script opens.
+
+VERY IMPORTANT:
+
+    1. The machine where the automated is running must have CYBERGHOSTVPN installed, since the bot uses the command to vary the IP.
+    2. Can not change the IP using CyberGhostVPN, either manually or in other processes that are running on the same automated machine, since the automated connection is through a SSH tunnel to the remote servers to execute the insert, change the IP At that time I would stop the connection between the machine and the remote server and therefore stop the insert.
+
+** Settings **
+
+Remote server: 13.57.62.82
+Route on the server: / home / ubuntu / redfin / redfin_property / insert_redfin_property /
