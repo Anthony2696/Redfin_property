@@ -55,10 +55,10 @@ def main():
         
         cmd = 'sudo cyberghostvpn --traffic --country-code codecountry --connect'
         d = {1:'MX', #Mexico
-            2: 'US', #USA
-            3: 'ES', #España
+            2: 'IT', #Italia
+            3: 'CO', #Colombia
             4: 'AR', #Argentina
-            5: 'CN' #China
+            5: 'PT' #Portugal
         }
 
         attemps = 0

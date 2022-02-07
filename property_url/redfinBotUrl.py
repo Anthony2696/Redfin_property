@@ -25,10 +25,10 @@ if __name__ == "__main__":
     print('START REDFIN BOT URLS')
     cmd = 'sudo cyberghostvpn --traffic --country-code codecountry --connect'
     d = {1:'MX', #Mexico
-        2: 'US', #USA
+        2: 'IT', #Italia
         3: 'ES', #España
         4: 'AR', #Argentina
-        5: 'CN' #China
+        5: 'PT' #Portugal
     }
     attemps = 0
     list_scrape = df
