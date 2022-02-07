@@ -19,7 +19,7 @@ if [ -d $directorio_files_csv ];then
 		for file in "$1"/input_data/divisions/part*.csv; do
 			./init.sh;
             ./run.sh "$1" "$file";
-            sudo docker rm $(sudo docker ps -a -f status=exited -f name=insert-redfin-original -q);
+            sudo docker rm $(sudo docker ps -a -f status=exited -f name=insert-redfin-property-anthony -q);
 		done
 	else
 		echo "¡¡El directorio: $directorio_files_csv, esta vacio!!"
