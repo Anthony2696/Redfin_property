@@ -46,7 +46,7 @@ file_bd=list1.csv
 if [ -f "$file_bd" ]; then
 	rm list1.csv
 fi
-python bd_to_csv.py list1 building_parcel_number 5
+python bd_to_csv.py list1 building_parcel_number 5000
 cd ..
 ########################################################
 
