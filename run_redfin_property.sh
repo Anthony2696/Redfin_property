@@ -254,7 +254,8 @@ horainit=$(date +%H)
 mininit=$(date +%M)
 year=$(date +%Y)
 month=$(date +%m)
-namefolder="$year-$month-$dayinit[$horainit:$mininit]"
+fecha=$(date +%F)
+namefolder="$fecha-$dayinit[$horainit:$mininit]"
 
 #./prepare_input.sh $namefolder
 
