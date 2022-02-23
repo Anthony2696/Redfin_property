@@ -62,7 +62,7 @@ def db_connection(db):
     open_ssh_tunnel()
     if (db == 'property_db'):
         mySQLconnection_Contractor = mysql.connector.connect(host='127.0.0.1',
-                        database='Property',
+                        database='Original',
                         user='anthony_briceno',
                         password='@nthony.Brice12',
                         port=tunnel.local_bind_port)
@@ -113,7 +113,7 @@ def consultar(n,column,bdname='property_db',table='Redfin'):
     cursor = mySQLconnection_Property.cursor()
     data = ''
     try:
-        sql_select_query = f"SELECT url,street_address,city,state_code,zip_code,redfin_original_id from OriginalData.{table} WHERE ({column} is NULL) LIMIT {n};"
+        sql_select_query = f"SELECT url,street_address,city,state_code,zip_code,redfin_original_id from Original.{table} WHERE ({column} is NULL) LIMIT {n};"
         cursor.execute(sql_select_query)
         data = cursor.fetchall()
     except Error as e:
