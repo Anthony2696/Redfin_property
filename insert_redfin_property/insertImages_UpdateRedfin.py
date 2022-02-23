@@ -76,7 +76,7 @@ def db_connection(db):
 
     if (db == 'property_db'):
         mySQLconnection_Contractor = mysql.connector.connect(host='127.0.0.1',
-                        database='OriginalData',
+                        database='Original',
                         user='user_insert',
                         password='kl4v3.1ns3rt',
                         port=tunnel.local_bind_port)
@@ -100,9 +100,9 @@ df_output = pd.DataFrame(columns=['redfin_original_id', 'building_parcel_number'
 def consult_original_id(original_id,cursor,table_name,path=None):
     try:
         if table_name == 'RedfinImages':
-            query = f"select redfin_original_id from OriginalData.{table_name} where(redfin_original_id = {original_id} and path_image = '{path}')"
+            query = f"select redfin_original_id from Original.{table_name} where(redfin_original_id = {original_id} and path_image = '{path}')"
         else:
-            query = f"select redfin_original_id from OriginalData.{table_name} where(redfin_original_id = %s)" % (original_id)
+            query = f"select redfin_original_id from Original.{table_name} where(redfin_original_id = %s)" % (original_id)
         cursor.execute(query)
         data = cursor.fetchall()
 
@@ -150,7 +150,7 @@ def process_update_redfin(row,mySQLconnection_Property,cursor,cursor_details,fil
         build_link_source = is_null(row["build_link_source"])
         
         cursor = mySQLconnection_Property.cursor()
-        sql_update_query = """UPDATE OriginalData.Redfin \
+        sql_update_query = """UPDATE Original.Redfin \
                         SET building_parcel_number = %s, number_of_stories = %s, number_of_half_bathrooms = %s, number_of_rooms = %s, \
                         garage_type = %s, heating_type = %s, building_external_wall = %s, foundation = %s, construction_type = %s, roof = %s, fireplace = %s, pool = %s, \
                         zoning = %s, legal_description = %s, parcel_status = %s, n_garage = %s, n_parking = %s,  builder_name = %s, property_tax_year = %s, property_tax = %s, \
@@ -166,15 +166,15 @@ def process_update_redfin(row,mySQLconnection_Property,cursor,cursor_details,fil
             cursor_details = mySQLconnection_Property.cursor()
             c = consult_original_id(original_id,cursor_details,'RedfinDetails')
             if c == 1:
-                sql_update_details = """ UPDATE OriginalData.RedfinDetails \
+                sql_update_details = """ UPDATE Original.RedfinDetails \
                     SET details = %s WHERE (redfin_original_id = %s) """
                 cursor_details.execute(sql_update_details,(PROPERTY_DETAILS,original_id))
             elif c == 2:
-                sql_update_details = """ UPDATE OriginalData.RedfinDetails \
+                sql_update_details = """ UPDATE Original.RedfinDetails \
                     SET details = %s WHERE (redfin_original_id = %s) """
                 cursor_details.execute(sql_update_details,(PROPERTY_DETAILS,original_id))
             else:
-                sql_insert_details = "INSERT INTO OriginalData.RedfinDetails \
+                sql_insert_details = "INSERT INTO Original.RedfinDetails \
                                         (redfin_original_id,details) \
                                         VALUES( %s, %s) "
                 cursor_details.execute(sql_insert_details,(original_id,PROPERTY_DETAILS))
@@ -205,7 +205,7 @@ def process_update_redfin_images(row,mySQLconnection_Property,cursor,file_name):
             print ("REPORT ERROR DUPLICATE MYSQL INSERT IMAGES REDFIN ORIGINAL_ID:", original_id, file_name)
             df_report = df_report.append({'file_name':file_name, 'redfin_original_id': original_id, 'error':'DUPLICATE ENTRY INTO REDFINIMAGES TABLE'}, ignore_index=True)
         else:
-            sql_insert_query = "INSERT INTO OriginalData.RedfinImages \
+            sql_insert_query = "INSERT INTO Original.RedfinImages \
                             (path_image, redfin_original_id) \
                             VALUES(%s, %s)"
                             
@@ -236,12 +236,12 @@ def update_redfin(df, file_name):
 def delete_all_redfin():
     """
         NO USAR, BORRA TODo EL CONTENIDO
-        DE LA TABLA REDFIN EN LA BD ORIGINALDATA
+        DE LA TABLA REDFIN EN LA BD Original
     """
-    print('Start Delete Redfin from OriginalData')
+    print('Start Delete Redfin from Original')
     mySQLconnection_Property = db_connection('property_db')
     cursor = mySQLconnection_Property.cursor()
-    sql_insert_query = "DELETE FROM OriginalData.Redfin"
+    sql_insert_query = "DELETE FROM Original.Redfin"
     cursor.execute (sql_insert_query)
 
     mySQLconnection_Property.commit()
